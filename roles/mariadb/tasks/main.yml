@@ -1,0 +1,26 @@
+- name: Install mariadb and update conf
+  apt:
+    name:
+      - mariadb-server
+      - libmysqlclient-dev
+    state: present # not required. choices: absent;build-dep;latest;present;fixed. Indicates the desired package state. C(latest) ensures that the latest version is installed. C(build-dep) ensures the package build dependencies are installed. C(fixed) attempt to correct a system with broken dependencies in place.
+    force_apt_get: yes # not required. Force usage of apt-get instead of aptitude
+
+- name: Run mysql_secure_installation
+  expect:
+    command: mysql_secure_installation
+    responses:
+      "Enter current password for root (enter for none):": ""
+      "Set root password? [Y/n]": "Y"
+      "New password:": "dialbox"
+      "Re-enter new password:": "dialbox"
+      "Remove anonymous users? [Y/n]": "Y"
+      "Disallow root login remotely? [Y/n]": "n"
+      "Remove test database and access to it? [Y/n]": "Y"
+      "Reload privilege tables now? [Y/n]": "Y"
+
+- name: update 50-server.conf
+  template:
+    src: 50-server.cnf.j2 # required. Path of a Jinja2 formatted template on the Ansible controller. This can be a relative or an absolute path. The file must be encoded with C(utf-8) but I(output_encoding) can be used to control the encoding of the output template.
+    dest: /etc/mysql/mariadb.conf.d/50-server.cnf # required. Location to render the template to on the remote machine.
+  notify: Restart mysql
