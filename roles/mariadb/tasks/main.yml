@@ -1,3 +1,6 @@
+---
+# tasks file for mariadb
+
 - name: Install mariadb and update conf
   apt:
     name:
@@ -12,8 +15,8 @@
     responses:
       "Enter current password for root (enter for none):": ""
       "Set root password? [Y/n]": "Y"
-      "New password:": "dialbox"
-      "Re-enter new password:": "dialbox"
+      "New password:": "{{ db_password }}"
+      "Re-enter new password:": "{{ db_password }}"
       "Remove anonymous users? [Y/n]": "Y"
       "Disallow root login remotely? [Y/n]": "n"
       "Remove test database and access to it? [Y/n]": "Y"

@@ -1,0 +1,25 @@
+---
+# tasks file for node
+
+- name: Install curl
+  apt:
+    name: curl
+    state: present # Ensure that curl is installed
+
+- name: Install NVM
+  command: >
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
+  args:
+    creates: ~/.nvm # Define a unique file or directory created by the script
+
+- name: Source ~/.profile
+  shell: source ~/.profile
+  args:
+    executable: /bin/bash # Use the Bash shell to source the profile
+
+- name: Install Node.js 14.15.0
+  shell: nvm install 14.15.0
+  args:
+    executable: /bin/bash # Use the Bash shell to execute nvm
+
+# Add additional tasks or handlers if needed
