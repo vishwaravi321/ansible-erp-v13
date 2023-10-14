@@ -13,14 +13,18 @@
   expect:
     command: mysql_secure_installation
     responses:
-      "Enter current password for root (enter for none):": ""
+      "Enter current password for root": ""
+      "Switch to unix_socket authentication [Y/n]": "y"
       "Set root password? [Y/n]": "Y"
-      "New password:": "{{ db_password }}"
-      "Re-enter new password:": "{{ db_password }}"
-      "Remove anonymous users? [Y/n]": "Y"
-      "Disallow root login remotely? [Y/n]": "n"
-      "Remove test database and access to it? [Y/n]": "Y"
-      "Reload privilege tables now? [Y/n]": "Y"
+      "New password:": "dialbox"
+      "Re-enter new password:": "dialbox"
+      "Remove anonymous users": "y"
+      "Disallow root login remotely": "n"
+      "Remove test database": "y"
+      "Reload privilege tables now": "y"
+    timeout: 1
+  register: secure_mariadb
+  failed_when: "'... Failed!' in secure_mariadb.stdout_lines"
 
 - name: update 50-server.conf
   template:

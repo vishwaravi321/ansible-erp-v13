@@ -4,7 +4,6 @@
 - name: Install dependencies using apt
   apt:
     update_cache: yes # not required. Run the equivalent of C(apt-get update) before the operation. Can be run as part of the package installation or as a separate step.
-    upgrade: dist # not required. choices: dist;full;no;safe;yes. If yes or safe, performs an aptitude safe-upgrade. If full, performs an aptitude full-upgrade. If dist, performs an apt-get dist-upgrade. Note: This does not upgrade a specific package, use state=latest for that. Note: Since 2.4, apt-get is used as a fall-back if aptitude is not present.
     name:
       - git
       - python3-dev
@@ -21,4 +20,3 @@
     state: latest # not required. choices: absent;build-dep;latest;present;fixed. Indicates the desired package state. C(latest) ensures that the latest version is installed. C(build-dep) ensures the package build dependencies are installed. C(fixed) attempt to correct a system with broken dependencies in place.
     autoremove: yes # not required. If C(yes), remove unused dependency packages for all module states except I(build-dep). It can also be used as the only option. Previous to version 2.4, autoclean was also an alias for autoremove, now it is its own separate command. See documentation for further information.
     autoclean: yes # not required. If C(yes), cleans the local repository of retrieved package files that can no longer be downloaded.
-    force_apt_get: yes # not required. Force usage of apt-get instead of aptitude
