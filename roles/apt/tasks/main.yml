@@ -1,0 +1,22 @@
+---
+# tasks file for apt
+
+- name: Install dependencies using apt
+  apt:
+    update_cache: yes # not required. Run the equivalent of C(apt-get update) before the operation. Can be run as part of the package installation or as a separate step.
+    name:
+      - git
+      - python3-dev
+      - python3-setuptools
+      - python3-pip
+      - virtualenv
+      - python3.10-venv
+      - software-properties-common
+      - redis-server
+      - xvfb
+      - libfontconfig
+      - wkhtmltopdf
+      - curl
+    state: latest # not required. choices: absent;build-dep;latest;present;fixed. Indicates the desired package state. C(latest) ensures that the latest version is installed. C(build-dep) ensures the package build dependencies are installed. C(fixed) attempt to correct a system with broken dependencies in place.
+    autoremove: yes # not required. If C(yes), remove unused dependency packages for all module states except I(build-dep). It can also be used as the only option. Previous to version 2.4, autoclean was also an alias for autoremove, now it is its own separate command. See documentation for further information.
+    autoclean: yes # not required. If C(yes), cleans the local repository of retrieved package files that can no longer be downloaded.
