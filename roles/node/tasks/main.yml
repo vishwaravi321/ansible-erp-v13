@@ -1,25 +1,22 @@
 ---
 # tasks file for node
 
-- name: Install curl
+- name: Install nvm
+  shell: >
+    curl "{{ nvm_url }}" | bash
+    creates=/home/{{ ansible_user_id }}/.nvm/nvm.sh
+
+- name: Install node and set version
+  shell: >
+    /bin/bash -c "source /home/{{ ansible_user_id }}/.nvm/nvm.sh && nvm install {{ node_version }}"
+    creates=/home/{{ ansible_user_id }}/.nvm/alias
+
+- name: Install npm
+  become: true
   apt:
-    name: curl
-    state: present # Ensure that curl is installed
+    name: npm # not required. A list of package names, like C(foo), or package specifier with version, like C(foo=1.0). Name wildcards (fnmatch) like C(apt*) and version wildcards like C(foo=1.0*) are also supported.
+    state: latest # not required. choices: absent;build-dep;latest;present;fixed. Indicates the desired package state. C(latest) ensures that the latest version is installed. C(build-dep) ensures the package build dependencies are installed. C(fixed) attempt to correct a system with broken dependencies in place.
 
-- name: Install NVM
-  command: >
-    curl -o- https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
-  args:
-    creates: ~/.nvm # Define a unique file or directory created by the script
-
-- name: Source ~/.profile
-  shell: source ~/.profile
-  args:
-    executable: /bin/bash # Use the Bash shell to source the profile
-
-- name: Install Node.js 14.15.0
-  shell: nvm install 14.15.0
-  args:
-    executable: /bin/bash # Use the Bash shell to execute nvm
-
-# Add additional tasks or handlers if needed
+- name: Install yarn
+  shell:
+    cmd: sudo npm install -g yarn # not required. The command to run followed by optional arguments.
